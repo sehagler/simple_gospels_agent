@@ -8,16 +8,18 @@ Created on Sat Mar  7 09:58:34 2026
 #
 import os
 import re
-import sys
 
 #
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_API_KEY"] = "..."
+os.environ["OPENAI_API_KEY"] ="..."
+os.environ["TAVILY_API_KEY"] = "..."
 os.environ['USER_AGENT'] = 'gospels_agent'
 
 #
-path = os.path.dirname(__file__)
-sys.path.insert(0, path + '/lib')
+from lib.agent import Agent_object
+from lib.query import Query_object
+from lib.vector_store import Vector_store_object
 
 #
 def  cleanup_data(documents):
@@ -31,12 +33,7 @@ def  cleanup_data(documents):
 
 #
 def main():
-    
-    #
-    from agent import Agent_object
-    from query import Query_object
-    from vector_store import Vector_store_object
-    
+
     #
     raw_data_paths = [ "data/matthew/matthew_text.txt",
                        "data/mark/mark_text.txt",
@@ -63,7 +60,7 @@ def main():
     vector_store_object.create_vector_store()
     
     #
-    if True:
+    if False:
         prompt = (
             "You have access to a tool that retrieves context from the Gospels. "
             "Answer queries using information available in the tool."
@@ -71,7 +68,7 @@ def main():
         query_object.query_loop_prompt(agent_object, vector_store_object, prompt)
     else:
         prompt = (
-            "You are an assistant that answers question from the Gospels. "
+            "You are a helpful assistant that answers question from the Gospels. "
             "Use the following context from the Gospels in your response:"
             )
         query_object.query_loop_dynamic_prompt(agent_object, vector_store_object, 

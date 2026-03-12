@@ -6,9 +6,11 @@ Created on Sun Mar  8 14:56:36 2026
 """
 
 #
-from langchain.chat_models import init_chat_model
+#from langchain.chat_models import init_chat_model
 from langchain.agents import create_agent
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
+#from langchain_classic.agents import AgentExecutor, create_openai_tools_agent
+from langchain_openai import ChatOpenAI
 from langchain.tools import tool
 
 #
@@ -54,11 +56,7 @@ class Agent_object(object):
     
     #
     def create_model(self):
-        self.model = init_chat_model(
-            "HuggingFaceTB/SmolLM2-1.7B-Instruct",
-            model_provider="huggingface",
-            max_tokens=1024,
-        )
+        self.model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     
     #
     def dynamic_prompt_agent(self, vector_store, system_message, query):
